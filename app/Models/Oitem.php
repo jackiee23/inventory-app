@@ -9,6 +9,8 @@ class Oitem extends Model
 {
     use HasFactory;
 
+    public $guarded = ['id'];
+
     public function stuff(){
         return $this->belongsTo(Stuff::class);
     }

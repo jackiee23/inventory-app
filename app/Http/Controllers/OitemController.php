@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Iitem;
 use App\Models\Oitem;
+use App\Models\Stuff;
 use Illuminate\Http\Request;
 
 use function GuzzleHttp\Promise\all;
@@ -19,10 +20,12 @@ class OitemController extends Controller
     {
         $oitem = Oitem::all();
         $iitems = Iitem::all();
+        $stuff = Stuff::all();
         return view('oitem.index', [
             'title' => 'Barang Keluar',
             'oitems' => $oitem,
-            'iitems' => $iitems
+            'iitems' => $iitems,
+            'stuffs' => $stuff
         ]);
     }
 
@@ -44,7 +47,8 @@ class OitemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Oitem::create($request->all());
+        return redirect('/oitem')->with('status', 'New data has been added');
     }
 
     /**

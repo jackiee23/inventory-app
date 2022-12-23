@@ -5,9 +5,64 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
-                    <div class="card-header pb-0">
+                    <div class="card-header pb-0 d-flex">
                         <h6>Data Barang</h6>
+                        <button type="button" class="btn bg-gradient-primary ms-3" data-bs-toggle="modal"
+                            data-bs-target="#inputModal">Tambah Barang</button>
                     </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="inputModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Tambah Barang</h5>
+                                    <button type="button" class="btn-close text-dark" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" action="/stuff">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="kd_barang">Masukan Kode Barang</label>
+                                            <input type="text" class="form-control" id="kd_barang" name="kd_barang"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nama_barang">Nama Barang</label>
+                                            <input type="text" class="form-control" id="nama_barang" name="nama_barang"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="satuan">Satuan</label>
+                                            <input type="text" class="form-control" id="satuan" name="satuan"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="status">Status</label>
+                                            <select required class="form-select form-control selectpicker" data-live-search="true"
+                                                name="status" id="status">
+                                                <option value="" selected>Pilih status</option>
+                                                    <option value="1">OK</option>
+                                                    <option value="2">PROBLEM</option>
+                                            </select>
+                                            {{-- <input type="text" class="form-control" id="status" name="status"
+                                                required> --}}
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn bg-gradient-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn bg-gradient-primary">Save changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
@@ -29,37 +84,45 @@
                                             Stok</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            Sisa</th>
+                                        <th
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Status</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($stuff as $barang)
-                                    <tr>
-                                        <td>
-                                            <p class="text-xs text-secondary mb-0">{{$loop->iteration}}</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-warning"> {{$barang->kd_barang}} </span>
-                                        </td>
-                                        <td>
-                                            {{$barang->nama_barang}}
-                                        </td>
-                                        <td class="text-center">
-                                            {{$barang->satuan}}
-                                        </td>
-                                        <td class="text-center">
-                                            {{$barang->stok}}
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="badge badge-sm bg-gradient-success"> {{$barang->status}} </span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
-                                        </td>
+                                        <tr>
+                                            <td>
+                                                <p class="text-xs text-secondary mb-0">{{ $loop->iteration }}</p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <span class="badge badge-sm bg-gradient-warning"> {{ $barang->kd_barang }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ $barang->nama_barang }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $barang->satuan }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $barang->stok }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $barang->stok - $barang->oitem }}
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="badge badge-sm bg-gradient-success"> {{ $barang->status }}
+                                                </span>
+                                            </td>
+                                            <td class="align-middle">
+                                                <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
+                                                    data-toggle="tooltip" data-original-title="Edit user">
+                                                    Edit
+                                                </a>
+                                            </td>
                                     @endforeach
                                 </tbody>
                             </table>

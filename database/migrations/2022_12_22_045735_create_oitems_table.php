@@ -16,7 +16,7 @@ class CreateOitemsTable extends Migration
         Schema::create('oitems', function (Blueprint $table) {
             $table->id();
             $table->foreignid('stuff_id');
-            $table->char('jumlah');
+            $table->char('jumlah')->default(0);
             $table->date('tgl_keluar');
             $table->timestamps();
         });

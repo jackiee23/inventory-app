@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Iitem;
+use App\Models\Stuff;
 use Illuminate\Http\Request;
 
 class IitemController extends Controller
@@ -15,9 +16,11 @@ class IitemController extends Controller
     public function index()
     {
         $iitems = Iitem::all();
+        $stuffs = Stuff::all();
         return view('iitem.index', [
             'title' => 'Barang Masuk',
-            'iitems' => $iitems
+            'iitems' => $iitems,
+            'stuffs' => $stuffs
         ]);
     }
 
@@ -39,7 +42,8 @@ class IitemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Iitem::create($request->all());
+        return redirect('/iitem');
     }
 
     /**

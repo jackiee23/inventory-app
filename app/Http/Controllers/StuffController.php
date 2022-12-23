@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Oitem;
 use App\Models\Stuff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StuffController extends Controller
 {
@@ -14,9 +16,22 @@ class StuffController extends Controller
      */
     public function index()
     {
-        $barang = Stuff::all();
+        // $barang = Stuff::all();
+        $total =  DB::table('stuffs')
+        ->leftJoin('iitems', 'stuffs.id', '=', 'iitems.stuff_id')
+        ->select('stuffs.kd_barang', 'stuffs.nama_barang', 'stuffs.satuan', DB::raw('cast(sum(iitems.jumlah)as int) as stok'), 'stuffs.status')
+        ->addSelect([
+            'oitem' => Oitem::selectRaw('sum(jumlah)')
+            ->whereColumn('stuff_id', 'stuffs.id')
+            ->groupBy('stuffs.id')
+            ->limit(1),
+        ])
+        ->groupBy('stuffs.id')
+        ->get();
+        // dd($total);
+
         return view('barang.index',[
-            'stuff' =>$barang,
+            'stuff' =>$total,
             'title' => 'Data Barang'
         ]);
     }
@@ -39,7 +54,8 @@ class StuffController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Stuff::create($request->all());
+        return redirect('/stuff')->with('status', 'New data has been added');
     }
 
     /**

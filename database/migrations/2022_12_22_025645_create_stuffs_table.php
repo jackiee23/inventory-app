@@ -18,7 +18,7 @@ class CreateStuffsTable extends Migration
             $table->string('nama_barang');
             $table->string('kd_barang')->unique();
             $table->char('satuan');
-            $table->char('stok');
+            // $table->char('stok')->default(0);
             $table->enum('status', ['OK', 'PROBLEM']);
             $table->timestamps();
         });
